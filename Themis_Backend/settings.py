@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    #app locales
+    'cuentas',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +75,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Themis_Backend.wsgi.application'
 
 
+AUTH_USER_MODEL = 'cuentas.CustomUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    # Other settings...
+}
+
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -86,6 +101,7 @@ DATABASES = {
         },
     }
 }
+
 
 
 # Password validation
