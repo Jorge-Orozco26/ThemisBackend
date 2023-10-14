@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     #app locales
     'cuentas',
+    'CRUDleyes',
 ]
 
 MIDDLEWARE = [
@@ -84,9 +85,6 @@ REST_FRAMEWORK = {
     # Other settings...
 }
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
