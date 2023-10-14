@@ -16,27 +16,40 @@ class LeyesView(View):
             leyes= list(Ley.objects.filter(id=id).values()) #listar las leyes por id
             if len(leyes)> 0:
                 laws =leyes[0]
-                datos = {'message': "Transacción exitosa", 'leyes': leyes }
+                datos = {'message': "Transacción exitosa", 'laws': laws }
             else:
-                datos = {'message': "No hay leyes..."}
+                datos = {'message': "Transacción inválida..."}
             return JsonResponse(datos) #devuelve una lista JSON aunque no halla datos
         else:
             leyes = list(Ley.objects.values())
             if len(leyes)>0:
                 datos = {'message': "Transacción exitosa", 'leyes': leyes }
             else:
-                datos = {'message': "No hay leyes..."}
+                datos = {'message': "Transacción inválida..."}
             return JsonResponse(datos)
 
 
-    def post(self, request):
-        jd =json.loads(request.body)
-        Ley.objects.create(titulo=jd['titulo'], numero_de_ley=jd['numero_de_ley'],descripcion=jd['descripcion'], articulo=jd['articulo'])
-        datos = {'message' : "Transacción exitosa"}
-        return JsonResponse(datos)
+    def put(self, request, id):
+        jd = json.loads(request.body)
+        leyes = list(Ley.objects.filter(id=id).values())  # Listar las leyes por id
+        if len(leyes) > 0:
+            laws = Ley.objects.get(id=id)
 
-    def put(self, request):
-        pass
+            # Actualiza solo los campos proporcionados en la solicitud
+            if 'titulo' in jd:
+                laws.titulo = jd['titulo']
+            if 'numero_de_ley' in jd:
+                laws.numero_de_ley = jd['numero_de_ley']
+            if 'descripcion' in jd:
+                laws.descripcion = jd['descripcion']
+            if 'articulo' in jd:
+                laws.articulo = jd['articulo']
+
+            laws.save()
+            datos = {'message': "Transacción exitosa"}
+        else:
+            datos = {'message': "Transacción inválida..."}
+        return JsonResponse(datos)
 
     def delete(self, request):
         pass
