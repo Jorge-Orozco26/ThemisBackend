@@ -11,13 +11,22 @@ class LeyesView(View):
     def dispatch(self, request, *args, **kwargs): #
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request):
-        leyes= list(Ley.objects.values()) #listar las leyes
-        if len(leyes)> 0:
-            datos = {'message': "Transacción exitosa", 'leyes': leyes }
+    def get(self, request, id=0):
+        if (id>0):
+            leyes= list(Ley.objects.filter(id=id).values()) #listar las leyes por id
+            if len(leyes)> 0:
+                laws =leyes[0]
+                datos = {'message': "Transacción exitosa", 'leyes': leyes }
+            else:
+                datos = {'message': "No hay leyes..."}
+            return JsonResponse(datos) #devuelve una lista JSON aunque no halla datos
         else:
-            datos = {'message': "No hay leyes..."}
-        return JsonResponse(datos) #devuelve una lista JSON aunque no halla datos
+            leyes = list(Ley.objects.values())
+            if len(leyes)>0:
+                datos = {'message': "Transacción exitosa", 'leyes': leyes }
+            else:
+                datos = {'message': "No hay leyes..."}
+            return JsonResponse(datos)
 
 
     def post(self, request):
