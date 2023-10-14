@@ -1,2 +1,2 @@
-cuentas/migrations
-CRUDleyes/migrations
+/cuentas/migrations/
+/CRUDleyes/migrations/
