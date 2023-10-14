@@ -51,5 +51,12 @@ class LeyesView(View):
             datos = {'message': "Transacción inválida..."}
         return JsonResponse(datos)
 
-    def delete(self, request):
-        pass
+    def delete(self, request, id):
+        leyes = list(Ley.objects.filter(id=id).values())
+        if len(leyes) > 0:
+            Ley.objects.filter(id=id).delete()
+            datos = {'message': "Transacción exitosa"}
+
+        else:
+            datos = {'message': "Transacción inválida..."}
+        return JsonResponse(datos)
