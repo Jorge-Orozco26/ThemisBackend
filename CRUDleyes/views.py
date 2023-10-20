@@ -27,7 +27,12 @@ class LeyesView(View):
             else:
                 datos = {'message': "Transacción inválida..."}
             return JsonResponse(datos)
-
+    
+    def post(self, request):
+        jd=json.loads(request.body)
+        Ley.objects.create(numero_de_ley=jd['numero_de_ley'],titulo=jd['titulo'],capitulo=jd['capitulo'],articulo=jd['articulo'], descripcion_Ext=jd['descripcion_Ext'], descripcion=jd['descripcion'])
+        datos= {'message': "Transacción exitosa"}
+        return JsonResponse(datos)
 
     def put(self, request, id):
         jd = json.loads(request.body)
@@ -36,14 +41,18 @@ class LeyesView(View):
             laws = Ley.objects.get(id=id)
 
             # Actualiza solo los campos proporcionados en la solicitud
-            if 'titulo' in jd:
-                laws.titulo = jd['titulo']
             if 'numero_de_ley' in jd:
                 laws.numero_de_ley = jd['numero_de_ley']
+            if 'titulo' in jd:
+                laws.titulo = jd['titulo']
+            if 'capitulo' in jd:
+                laws.capitulo = jd['capitulo']
+            if 'articulo' in jd:
+                laws.articulo = jd['articulo']          
+            if 'descripcion_Ext' in jd:
+                laws.descripcion_Ext = jd['descripcion_Ext']
             if 'descripcion' in jd:
                 laws.descripcion = jd['descripcion']
-            if 'articulo' in jd:
-                laws.articulo = jd['articulo']
 
             laws.save()
             datos = {'message': "Transacción exitosa"}
