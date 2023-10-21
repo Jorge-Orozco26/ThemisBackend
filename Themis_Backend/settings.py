@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     #app locales
     'cuentas',
     'CRUDleyes',
+    'tramitesLeg',
 ]
 
 MIDDLEWARE = [
