@@ -26,28 +26,28 @@ def register_user(request):
 
 #INICIO DE SESION CON TOKEN DE AUTENTICACION
 
-@api_view(['POST']) #esta vista se utiliza para procesar solicitudes de inicio de sesion
+@api_view(['POST'])
 def user_login(request):
     if request.method == 'POST':
         username = request.data.get('username')
         password = request.data.get('password')
 
-        user = None #para inicio de sesion con correo electronico
+        user = None
         if '@' in username:
             try:
-                user = CustomUser.objects.get(email=username) #si pone @ en username buscará en la BD si existe un email que coincida
+                user = CustomUser.objects.get(email=username)
             except CustomUser.DoesNotExist:
                 pass
 
         if user is None:
-            user = authenticate(request, username=username, password=password) #se intenta autenticar al usuario utilizando los datos proporcionados
+            user = authenticate(request, username=username, password=password)
 
         if user:
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)
-
-        return Response({'access_token': access_token}, status=status.HTTP_200_OK)
-
+            
+            return Response({'token': access_token}, status=status.HTTP_200_OK)
+        
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
