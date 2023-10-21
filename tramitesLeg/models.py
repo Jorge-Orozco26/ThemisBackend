@@ -45,16 +45,6 @@ class Solicitudes_Rellenas(models.Model):
     def __str__(self):
         return f"Solicitud Rellenada #{self.ID_Solicitudes_Rellenas}"
 
-class Rol(models.Model):
-    ID_Rol = models.AutoField(primary_key=True)
-    Codigo_Rol = models.CharField(max_length=50)
-    Nombre_Rol = models.CharField(max_length=255)
-    Usuario_Registro = models.CharField(max_length=50)
-    Fecha_Registro = models.DateTimeField()
-    estado = models.BooleanField()
-
-    def __str__(self):
-        return self.Nombre_Rol
 
 
 
