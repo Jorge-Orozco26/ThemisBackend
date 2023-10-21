@@ -30,7 +30,7 @@ class LeyesView(View):
     
     def post(self, request):
         jd=json.loads(request.body)
-        Ley.objects.create(numero_de_ley=jd['numero_de_ley'],titulo=jd['titulo'],capitulo=jd['capitulo'],articulo=jd['articulo'], descripcion_Ext=jd['descripcion_Ext'], descripcion=jd['descripcion'])
+        Ley.objects.create(numero_de_ley=jd['numero_de_ley'],titulo=jd['titulo'],capitulo=jd['capitulo'],articulo=jd['articulo'], descripcion_Ext=jd['descripcion_Ext'], descripcion=jd['descripcion'], llaveLey_id = jd['llaveLey_id'])
         datos= {'message': "Transacción exitosa"}
         return JsonResponse(datos)
 
@@ -53,6 +53,7 @@ class LeyesView(View):
                 laws.descripcion_Ext = jd['descripcion_Ext']
             if 'descripcion' in jd:
                 laws.descripcion = jd['descripcion']
+
 
             laws.save()
             datos = {'message': "Transacción exitosa"}
