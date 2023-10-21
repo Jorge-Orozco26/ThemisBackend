@@ -7,6 +7,9 @@ from django.contrib.auth import authenticate
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 
 from .models import CustomUser
@@ -33,21 +36,23 @@ def user_login(request):
         if '@' in username:
             try:
                 user = CustomUser.objects.get(email=username) #si pone @ en username buscará en la BD si existe un email que coincida
-            except ObjectDoesNotExist:                        #si se encuentra un usuario se asigna a la variable user
+            except CustomUser.DoesNotExist:
                 pass
 
-        if not user: #si no se encontró un usuario mediante la busqueda de email o si el valor de username no contiene un @
-            user = authenticate(username=username, password=password) #se intenta autenticar al usuario utilizando los datos proporcionados
+        if user is None:
+            user = authenticate(request, username=username, password=password) #se intenta autenticar al usuario utilizando los datos proporcionados
 
         if user:
-            token, _ = Token.objects.get_or_create(user=user) #se genera un token de autenticación si el usuario se logra autenticar
-            return Response({'token': token.key}, status=status.HTTP_200_OK)
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
 
-        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED) #manda error si no se autentica
+        return Response({'access_token': access_token}, status=status.HTTP_200_OK)
+
+        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated]) #viste solo para usuarios autenticados
+@permission_classes([IsAuthenticated]) #vista solo para usuarios autenticados
 def user_logout(request):
     if request.method == 'POST':
         try:
