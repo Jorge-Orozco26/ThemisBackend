@@ -33,7 +33,7 @@ class LeyesView(View):
             jd = json.loads(request.body)
             Ley.objects.create(
                 numero_de_ley=jd['numero_de_ley'],
-                titulo=jd['titulo'],
+                titulo=jd['titulo'],    
                 capitulo=jd['capitulo'],
                 articulo=jd['articulo'],
                 descripcion_Ext=jd['descripcion_Ext'],
