@@ -10,6 +10,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import CustomUser
+from django.http.response import JsonResponse
+from django.views import View
 
 #REGISTRO DE USUARIOS
 @api_view(['POST']) #esta vista se utiliza para procesar solicitudes de registro de usuarios.
@@ -17,7 +19,7 @@ def register_user(request):
     if request.method == 'POST': #solo responde a POST
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid(): #Verifica los datos de serializers
-            serializer.save() #guarda
+            serializer.save() #g|uarda
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -55,3 +57,21 @@ def user_logout(request):
             return Response({'message': 'Successfully logged out.'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class UsuariosView(View):
+    def get(self, request, id=0):
+        if(id>0):
+            usuarios= list(CustomUser.objects.filter(id=id).values())
+            if len(usuarios)>0:
+                users=usuarios[0]
+                datos= {'message': "Transacción exitosa", 'users': users}
+            else:
+                datos ={'message': "Transacción inválida..."}
+            return JsonResponse(datos)
+        else:
+            usuarios = list(CustomUser.objects.values())
+            if len(usuarios)>0:
+                datos = {'message': "Transacción exitosa", 'usuarios': usuarios }
+            else:
+                datos = {'message': "Transacción inválida..."}
+            return JsonResponse(datos)

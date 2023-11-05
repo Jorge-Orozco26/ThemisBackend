@@ -8,7 +8,7 @@ import json
 class LeyesView(View):
     
     @method_decorator(csrf_exempt) #el CSRF es una medida de seguridad que evita que las solicitudes maliciosas se realicen en nombre de un usuario autenticado
-    def dispatch(self, request, *args, **kwargs): #
+    def dispatch(self, request, *args, **kwargs): # 
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, id=0):
