@@ -8,7 +8,7 @@ class Procedimientos_Legales(models.Model):
     DescripcionProcedimiento = models.TextField()
     PasosSeguir = models.TextField()
     Usuario_Registro = models.CharField(max_length=50)
-    Fecha_Registro = models.DateTimeField()#.DateTimeField para fecha
+    Fecha_Registro = models.DateTimeField(auto_now_add=True)#.DateTimeField para fecha
     Estado = models.BooleanField()
 
 

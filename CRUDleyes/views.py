@@ -65,8 +65,6 @@ class LeyesView(View):
                 laws.descripcion_Ext = jd['descripcion_Ext']
             if 'descripcion' in jd:
                 laws.descripcion = jd['descripcion']
-
-
             laws.save()
             datos = {'message': "Transacción exitosa"}
         else:

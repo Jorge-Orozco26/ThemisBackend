@@ -9,9 +9,6 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-
-
-
 from .models import CustomUser
 
 #REGISTRO DE USUARIOS
@@ -25,7 +22,6 @@ def register_user(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #INICIO DE SESION CON TOKEN DE AUTENTICACION
-
 @api_view(['POST'])
 def user_login(request):
     if request.method == 'POST':
@@ -49,7 +45,6 @@ def user_login(request):
             return Response({'token': access_token}, status=status.HTTP_200_OK)
         
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated]) #vista solo para usuarios autenticados

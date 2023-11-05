@@ -8,7 +8,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
-#CRUD MODELO Procedimientos_Legales
+                                                    
+                                                    #CRUD MODELO Procedimientos_Legales
 
 class procedimientolegal(View):
     
@@ -18,8 +19,7 @@ class procedimientolegal(View):
 
     def get(self, request, id=0):
         if (id>0):
-            
-            procedimiento = Procedimientos_Legales.objects.get(ID_Procedimientos_Legales=id)#listar los registros por id
+            procedimientos = list(Procedimientos_Legales.objects.filter(ID_Procedimientos_Legales=id).values())#listar los registros por id
             if len(procedimientos)> 0:
                 Procedure =procedimientos[0]
                 datos = {'message': "Transacción exitosa", 'Procedure': Procedure }
@@ -36,7 +36,7 @@ class procedimientolegal(View):
         
 
 
-#EL METODO POST NO FUNCIONA PORQUE DEPENDE DE UN CLAVE: REGISTRO_USUARIO/FOREIGN_KEY
+#EL METODO POST NO VA A FUNCIONAR PORQUE DEPENDE DE UN CLAVE: REGISTRO_USUARIO/FOREIGN_KEY
     def post(self,request):
         try:
             jd = json.loads(request.body)
@@ -55,8 +55,32 @@ class procedimientolegal(View):
             datos = {'error': f'La clave {str(e)} no se encuentra en la solicitud POST.'}
             return JsonResponse(datos, status=400)
 
-    def put(self,request):
-        pass
+    def put(self, request, id):
+        jd = json.loads(request.body)
+        procedimientos = list(Procedimientos_Legales.objects.filter(ID_Procedimientos_Legales=id).values())
+        if len(procedimientos) > 0:
+            procedure = Procedimientos_Legales.objects.get(ID_Procedimientos_Legales=id)
+
+            # Actualiza solo los campos proporcionados en la solicitud
+            if 'Nombre_Procedimiento' in jd:
+                procedure.Nombre_Procedimiento = jd['Nombre_Procedimiento']
+            if 'DescripcionProcedimiento' in jd:
+                procedure.DescripcionProcedimiento = jd['DescripcionProcedimiento']
+            if 'PasosSeguir' in jd:
+                procedure.PasosSeguir = jd['PasosSeguir']
+            if 'Usuario_Registro' in jd:
+                procedure.Usuario_Registro = jd['Usuario_Registro']        
+            if 'Fecha_Registro' in jd:
+                procedure.Fecha_Registro = jd['Fecha_Registro']
+            if 'Estado' in jd:
+                procedure.Estado = jd['Estado']
+
+            procedure.save()
+            datos = {'message': "Transacción exitosa"}
+        else:
+            datos = {'message': "Transacción inválida..."}
+        return JsonResponse(datos)
+
     def delete(self,request):
         pass
 
@@ -71,9 +95,9 @@ class PlantillaSoli(View):
 
     def get(self, request, id=0):
         if (id>0):
-            plantilla= list(Plantilla_Solicitud.objects.filter(id=id).values())
+            plantilla= list(Plantilla_Solicitud.objects.filter(ID_Plantilla_Solicitud=id).values())
             if len(plantilla)> 0:
-                plant =plant[0]
+                plant =plantilla[0]
                 datos = {'message': "Transacción exitosa", 'plant': plant }
             else:
                 datos = {'message': "Transacción inválida..."}
@@ -105,3 +129,32 @@ class PlantillaSoli(View):
             # Manejar el caso en el que una clave está ausente en la solicitud POST
             datos = {'error': f'La clave {str(e)} no se encuentra en la solicitud POST.'}
             return JsonResponse(datos, status=400)
+
+
+    def put(self, request, id):
+        jd = json.loads(request.body)
+        plantilla = list(Plantilla_Solicitud.objects.filter(ID_Plantilla_Solicitud=id).values())
+        if len(procedimientos) > 0:
+            plant = Plantilla_Solicitud.objects.get(ID_Plantilla_Solicitud=id)
+
+            # Actualiza solo los campos proporcionados en la solicitud
+            if 'Nombre' in jd:
+                plant.Nombre = jd['Nombre']
+            if 'Contenido' in jd:
+                plant.Contenido = jd['Contenido']
+            if 'Usuario_Registro' in jd:
+                plant.Usuario_Registro = jd['Usuario_Registro']
+            if 'Fecha_Registro' in jd:
+                plant.Fecha_Registro = jd['Fecha_Registro']
+            if 'Estado' in jd:
+                plant.Estado = jd['Estado']
+            if 'procedimiento_legales_id' in jd:
+                plant.procedimiento_legales_id = jd['procedimiento_legales_id']
+            if 'usuario_creador_id' in jd:
+                plant.usuario_creador_id = jd['usuario_creador_id']
+
+            plant.save()
+            datos = {'message': "Transacción exitosa"}
+        else:
+            datos = {'message': "Transacción inválida..."}
+        return JsonResponse(datos)
