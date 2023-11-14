@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'cuentas',
     'CRUDleyes',
     'tramitesLeg',
+    'AgendarCitas',
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Pictures')

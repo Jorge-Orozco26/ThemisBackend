@@ -11,7 +11,7 @@ import json
                                                     
                                                     #CRUD MODELO Procedimientos_Legales
 
-class procedimientolegal(View):
+class procedimientolegal(View): 
     
     @method_decorator(csrf_exempt) #el CSRF es una medida de seguridad que evita que las solicitudes maliciosas se realicen en nombre de un usuario autenticado
     def dispatch(self, request, *args, **kwargs): #
