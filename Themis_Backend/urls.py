@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/', include('cuentas.urls')),  
     path('api/', include('CRUDleyes.urls')), 
     path('api/', include('tramitesLeg.urls')),
+    path('api/', include('AgendarCitas.urls')),
 ]
 
 if settings.DEBUG:
