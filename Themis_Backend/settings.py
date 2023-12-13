@@ -122,7 +122,7 @@ DATABASES = {
         'ENGINE': 'mssql', #mssql es el unico paquete que funcionó con SQL SERVER V18  
         'NAME': 'ThemisDB',#Nombre Base de datos
         'USER': 'rene',
-        'PASSWORD': '680Cfc08fe',
+        'PASSWORD': '123456789',
         'HOST': 'DESKTOP-LM21HGB\SQLEXPRESS',  # Servidor
         'PORT': '',  # Por defecto, el puerto de SQL Server es 1433
         'OPTIONS': {

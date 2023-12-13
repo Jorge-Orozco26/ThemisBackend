@@ -33,6 +33,7 @@ class CustomUser(AbstractUser):  #hereda la clase de abstractUser de Django y la
     Picture = models.CharField(max_length=255, null=True)
     Telefono = models.CharField(max_length=8, null=True)
     Cedula = models.CharField(max_length=16, null=True)
+    Honorarios = models.IntegerField(null= True)
 
     
     
